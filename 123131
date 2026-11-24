@@ -1,0 +1,98 @@
+#include <iostream>
+
+#include <iomanip>
+
+#include <stdexcept>
+
+using namespace std;
+
+
+class IntUnsNumber {
+
+private:
+
+    int whole, fraction;
+
+public:
+
+    // Дробова частина задається у тисячних.
+
+    IntUnsNumber(int w = 0, int f = 0) {
+
+        set(w, f);
+
+    }
+
+    IntUnsNumber(const IntUnsNumber& other) {
+
+        whole = other.whole;
+
+        fraction = other.fraction;
+
+    }
+
+    ~IntUnsNumber() {
+
+        cout << "Об'єкт знищено." << endl;
+
+    }
+
+    void set(int w, int f) {
+
+        if (w < 0 || f < 0 || f > 999)
+
+            throw invalid_argument("Некоректне число");
+
+        whole = w;
+
+        fraction = f;
+
+    }
+
+    int getWhole() const { return whole; }
+
+    int getFraction() const { return fraction; }
+
+    // Перетворення об'єкта на дійсне число.
+
+
+    operator double() const {
+
+        return whole + fraction / 1000.0;
+
+    }
+
+    double multiply(int n) const {
+
+        return static_cast<double>(*this) * n;
+
+    }
+
+};
+
+
+int main() {
+
+    IntUnsNumber a(12, 345);
+
+    IntUnsNumber b(a);
+
+    b.set(7, 250);
+
+    cout << fixed << setprecision(3);
+
+    cout << "Число A: " << double(a) << endl;
+
+    cout << "Число B: " << double(b) << endl;
+
+    cout << "Ціла частина A: " << a.getWhole() << endl;
+
+    cout << "Дробова частина A: " << a.getFraction() << endl;
+
+    cout << "A * 3 = " << a.multiply(3) << endl;
+
+    cout << "B * (-2) = " << b.multiply(-2) << endl;
+
+    return 0;
+
+}
